@@ -164,8 +164,5 @@ public class SpringUtil implements ApplicationContextAware {
 		ConfigurableApplicationContext context = (ConfigurableApplicationContext) applicationContext;
 		context.getBeanFactory().registerSingleton(beanName, bean);
 	}
+
 }
-
-
-
-

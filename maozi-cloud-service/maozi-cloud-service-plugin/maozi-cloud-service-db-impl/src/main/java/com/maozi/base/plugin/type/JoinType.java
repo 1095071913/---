@@ -7,17 +7,6 @@ import com.maozi.base.plugin.impl.join.QueryRightJoinPlugin;
 import com.maozi.base.plugin.join.JoinBaseType;
 import lombok.Getter;
 
-/**  
- * @Title: QueryType.java
- *
- * @Description: TODO
- *
- * @Author: 彭晋龙
- *
- * @Date: 2023-06-21 09:48:40
- *
- */
-
 @Getter
 public enum JoinType {
 

@@ -7,6 +7,6 @@ import com.maozi.utils.context.ApplicationEnvironmentContext;
 public class EnvironmentMessageConverter extends MessageConverter {
     @Override
     public String convert(ILoggingEvent event) {
-        return ApplicationEnvironmentContext.environment;
+        return ApplicationEnvironmentContext.ENVIRONMENT;
     }
 }

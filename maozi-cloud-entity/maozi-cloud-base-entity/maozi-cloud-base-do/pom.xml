@@ -13,8 +13,7 @@
 
 
 	<dependencies> 
- 
- 
+
 		<!-- ORM Begin -->
 		<dependency>
 			<groupId>com.baomidou</groupId>
@@ -26,12 +25,6 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>${mybatis.version}</version>
-    	</dependency>
-    	
-		<dependency>
-			<groupId>com.gitee.sunchenbin.mybatis.actable</groupId>
-			<artifactId>mybatis-enhance-actable</artifactId>
-			<version>${mybatis-enhance-actable.version}</version>
 		</dependency>
 		<!-- ORM End -->
 		
@@ -40,7 +33,6 @@
 			<artifactId>maozi-cloud-base-enum</artifactId>
 			<version>${maozi-cloud-base-enum.version}</version>
 		</dependency>
-
 
 	</dependencies>
 

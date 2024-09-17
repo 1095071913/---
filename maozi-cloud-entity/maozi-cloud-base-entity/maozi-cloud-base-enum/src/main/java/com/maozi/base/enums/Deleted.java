@@ -1,20 +1,10 @@
 package com.maozi.base.enums;
 
-import com.maozi.base.IEnum;
+import com.maozi.base.BaseEnum;
 import lombok.Getter;
 import lombok.Setter;
 
-/**  
- * @Title: Status.java
- *
- * @Description: TODO
- *
- * @Author: 彭晋龙
- *
- * @Date: 2023-03-22 11:21:04
- *
- */
-public enum Deleted implements IEnum {
+public enum Deleted implements BaseEnum {
 	
 	none(0,"未删除"),del(1,"已删除");
 	

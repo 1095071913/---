@@ -18,8 +18,9 @@
 
 package com.maozi.log.config;
 
+import cn.hutool.core.util.StrUtil;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
-import com.maozi.common.result.code.CodeAttribute;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class RemoteInvokeErrorToleranceAop extends BaseCommon {
+public class RemoteInvokeErrorToleranceAop extends BaseCommon<SystemErrorCode> {
 
 	private final String POINT = "execution(com.maozi.common.result.AbstractBaseResult com.maozi.*.*.api.rpc..*.*(..)) || execution(com.maozi.common.result.AbstractBaseResult com.maozi.*.*.api.rest..*.*(..))";
 
@@ -54,11 +55,11 @@ public class RemoteInvokeErrorToleranceAop extends BaseCommon {
 				logs.put("ErrorDesc", e.getLocalizedMessage());
 				logs.put("ErrorLine", e.getStackTrace()[0].toString());
 
-				log.error(getStackTrace(e));
+				error(e);
 
-				log.error(appendLog(logs).toString());
+				error(logs);
 
-				return error(new CodeAttribute(6,"服务错误" + "(" + applicationName + ")"),500);
+				return error(StrUtil.upperFirst(applicationName),SystemErrorCode.SERVICE_RPC_ERROR,500);
 
 			}
 

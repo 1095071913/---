@@ -12,8 +12,6 @@
 
 	<dependencies>
 
-
-
 		<!-- ORM Begin -->
 		<dependency>
 			<groupId>com.maozi</groupId>
@@ -30,18 +28,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.gitee.sunchenbin.mybatis.actable</groupId>
-			<artifactId>mybatis-enhance-actable</artifactId>
-			<version>${mybatis-enhance-actable.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.baomidou</groupId>
-					<artifactId>mybatis-plus-annotation</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 		<dependency>
@@ -62,8 +48,6 @@
 		<!-- ORM End -->
 
 
-
-
 		<!-- Project Begin -->
 		<dependency>
 			<groupId>com.maozi</groupId> 
@@ -76,8 +60,7 @@
 			<artifactId>maozi-cloud-config-redis</artifactId>
 			<version>${maozi-cloud-config-redis.version}</version>
 		</dependency>
-		<!-- Project End --> 
-
+		<!-- Project End -->
 
 	</dependencies>
 

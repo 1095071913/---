@@ -22,19 +22,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-/**	
- * 
- *  Specifications：功能
- * 
- *  Author：彭晋龙
- * 
- *  Creation Date：2021-12-18:16:32:34
- *
- *  Copyright Ownership：xiao mao zi
- * 
- *  Agreement That：Apache 2.0
- * 
- */
+
 
 public interface QNYService {
 	

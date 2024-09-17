@@ -19,6 +19,7 @@ package com.maozi.qny.api.impl.rest;
 
 import com.maozi.base.annotation.Get;
 import com.maozi.base.annotation.RestService;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import com.maozi.common.result.AbstractBaseResult;
 import com.maozi.qny.properties.QNYProperties;
@@ -27,23 +28,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**	
- * 
- *  Specifications：功能
- * 
- *  Author：彭晋龙
- * 
- *  Creation Date：2021-12-18:16:32:34
- *
- *  Copyright Ownership：xiao mao zi
- * 
- *  Agreement That：Apache 2.0
- * 
- */
+
 
 @RestService
 @Tag(name = "【全局】图片管理")
-public class OssServiceRestImpl extends BaseCommon {
+public class OssServiceRestImpl extends BaseCommon<SystemErrorCode> {
 
 	private static final String PATH = "/oss";
 	

@@ -118,8 +118,6 @@ public class RestTemplate extends org.springframework.web.client.RestTemplate {
 			logs.put("RT", (System.currentTimeMillis() - startTime) + " ms");
 
 			BaseCommon.log(error,logs);
-
-			BaseCommon.clearContext();
 			
 		}
 

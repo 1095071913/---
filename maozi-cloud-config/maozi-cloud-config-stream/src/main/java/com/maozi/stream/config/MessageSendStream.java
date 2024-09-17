@@ -29,7 +29,7 @@ public class MessageSendStream {
 
         MessageBuilder<D> messageBuilder = MessageBuilder.fromMessage(message);
 
-        List<ServiceInstance> instances = discoveryClient.getInstances(ApplicationEnvironmentContext.applicationName);
+        List<ServiceInstance> instances = discoveryClient.getInstances(ApplicationEnvironmentContext.APPLICATION_NAME);
 
         Map<String,List<ServiceInstance>> applicationClients = instances.stream().collect(Collectors.groupingBy((instance)->{
             return instance.getMetadata().get("version");

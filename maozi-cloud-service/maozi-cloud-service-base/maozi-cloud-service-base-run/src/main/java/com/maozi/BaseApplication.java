@@ -73,8 +73,8 @@ public class BaseApplication {
 
 			builder.bannerMode(Mode.OFF).run(new String[] {});
 			logs.put("InitTime", (System.currentTimeMillis() - begin) + " ms");
-			logs.put("Nacos", ApplicationEnvironmentContext.nacosAddr);
-			logs.put("Config", ApplicationEnvironmentContext.loadConfig);
+			logs.put("Nacos", ApplicationEnvironmentContext.CONFIG_ADDR);
+			logs.put("Config", ApplicationEnvironmentContext.LOAD_CONFIG);
 
 		}
 		catch (Exception e) {
@@ -83,8 +83,8 @@ public class BaseApplication {
 
 			errorBoo = true;
 			StackTraceElement stackTraceElement = e.getStackTrace()[0];
-			logs.put("Nacos", ApplicationEnvironmentContext.nacosAddr);
-			logs.put("Config", ApplicationEnvironmentContext.loadConfig);
+			logs.put("Nacos", ApplicationEnvironmentContext.CONFIG_ADDR);
+			logs.put("Config", ApplicationEnvironmentContext.LOAD_CONFIG);
 			logs.put("ErrorDesc", e.getLocalizedMessage());
 			logs.put("ErrorLine", stackTraceElement.toString());
 
@@ -92,14 +92,14 @@ public class BaseApplication {
 		finally {
 
 			if (errorBoo) {
-				log.error(BaseCommon.appendLog(logs).toString());
+				BaseCommon.error(logs);
 				System.exit(0);
 			}
 			else {
-				log.info(BaseCommon.appendLog(logs).toString());
+				BaseCommon.info(logs);
 			}
-			
-			BaseCommon.clearContext();
+
+			ApplicationEnvironmentContext.IS_RUNNING = true;
 
 		}
 

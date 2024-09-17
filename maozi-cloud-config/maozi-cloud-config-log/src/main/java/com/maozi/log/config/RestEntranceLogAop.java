@@ -21,6 +21,7 @@ package com.maozi.log.config;
 import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.node.Node;
 import com.maozi.base.enums.EnvironmentType;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import com.maozi.common.result.AbstractBaseResult;
 import com.maozi.common.result.error.ErrorResult;
@@ -42,7 +43,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Order(value = Ordered.HIGHEST_PRECEDENCE + 1 )
-public class RestEntranceLogAop extends BaseCommon {
+public class RestEntranceLogAop extends BaseCommon<SystemErrorCode> {
 	
 	@Resource
 	private RestEntranceLogUtils restEntranceLogUtils;
@@ -50,8 +51,8 @@ public class RestEntranceLogAop extends BaseCommon {
 	private final String POINT = "execution(* com.maozi.*.*.api.impl.rpc..*(..)) || execution(* com.maozi.*.*.api.impl.rest..*(..)) || execution(com.maozi.common.result.AbstractBaseResult com.maozi.base.api.impl.BaseServiceImpl.*(..))";
 
     @Around(POINT)
-    public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable { 
-    	
+    public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
     	Long startTime = System.currentTimeMillis();
     	
     	String tid = BaseCommon.getTraceId();
@@ -92,7 +93,7 @@ public class RestEntranceLogAop extends BaseCommon {
 
         	String stackTrace = getStackTrace(e);
         	
-            resultData = error(code(500),500);
+            resultData = error(getCodes().SYSTEM_ERROR,500);
             
             functionError(stackTrace);
             
@@ -112,7 +113,7 @@ public class RestEntranceLogAop extends BaseCommon {
         } finally {
 
 			StringBuilder respSql = sql.get();
-			if(isNotNull(respSql)) { logs.put("SQL", respSql.toString());}
+			if(isNotNull(respSql)) {logs.put("SQL", respSql.toString());}
 
 			logs.put("RT", (System.currentTimeMillis() - startTime) + " ms");
         	
@@ -130,7 +131,7 @@ public class RestEntranceLogAop extends BaseCommon {
 
 						if(errorResult.autoIdentifyHttpCode().isBusinessError()) {log.warn(appendLog(logs).toString());}
 
-						else {log.error(appendLog(logs).toString());}
+						else {error(logs);}
 
 						if(result.getCode() == 500 && logs.containsKey("ErrorDesc")) {restEntranceLogUtils.errorLogAlarm(proceedingJoinPoint,arg,tid,logs);}
 
@@ -144,9 +145,11 @@ public class RestEntranceLogAop extends BaseCommon {
 
 			curNode.addPassRequest(1);
 
-			log.info(appendLog(logs).toString());
+			info(logs);
 
 		}
+
+		if(isNull(request)) {BaseCommon.clearContext();}
         
         return resultData;
     

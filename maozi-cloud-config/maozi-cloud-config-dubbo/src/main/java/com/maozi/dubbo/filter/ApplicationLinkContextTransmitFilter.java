@@ -22,7 +22,7 @@ public class ApplicationLinkContextTransmitFilter implements Filter {
 
         return invoker.invoke(invocation);
 
-//        return new AsyncRpcResult(CompletableFuture.completedFuture(new AppResponse(BaseCommon.error(new CodeAttribute(6,"服务错误" + "(" + applicationName + ")"),500))), invocation);
+//        return new AsyncRpcResult(CompletableFuture.completedFuture(new AppResponse(BaseCommon.error(new CodeData(6,"服务错误" + "(" + applicationName + ")"),500))), invocation);
 
     }
 

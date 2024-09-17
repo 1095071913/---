@@ -13,59 +13,60 @@ import org.springframework.stereotype.Component;
 @RefreshScope(proxyMode = ScopedProxyMode.NO)
 public class ApplicationEnvironmentContext {
 
+	public static Boolean IS_RUNNING = false;
+
 	public static String applicationProjectAbbreviation;
 	@Value("${application-project-abbreviation}")
 	public void setApplicationProjectAbbreviation(String applicationProjectAbbreviation) {
 		ApplicationEnvironmentContext.applicationProjectAbbreviation=applicationProjectAbbreviation;
 	}
 
-	public static String applicationName;
+	public static String APPLICATION_NAME;
 	@Value("${spring.application.name}")
 	public void setApplicationName(String applicationName) {
-		ApplicationEnvironmentContext.applicationName=applicationName;
+		ApplicationEnvironmentContext.APPLICATION_NAME = applicationName;
 	}
 	
-	public static String loadConfig;
+	public static String LOAD_CONFIG;
 	@Value("${spring.cloud.nacos.config.shared-dataids}")
 	public void setLoadConfig(String loadConfig) {
-		ApplicationEnvironmentContext.loadConfig = loadConfig;
+		ApplicationEnvironmentContext.LOAD_CONFIG = loadConfig;
 	}
 	
-	public static String nacosAddr;
+	public static String CONFIG_ADDR;
 	@Value("${spring.cloud.nacos.config.server-addr}")
-	public void setNacosAddr(String nacosAddr) {
-		ApplicationEnvironmentContext.nacosAddr = nacosAddr;
+	public void setConfigAddr(String configAddr) {
+		ApplicationEnvironmentContext.CONFIG_ADDR = configAddr;
 	}
 	
-	public static String environment;
+	public static String ENVIRONMENT;
 	@Value("${project.environment}")
 	public void setEnvironment(String environment) {
-		ApplicationEnvironmentContext.environment = environment;
+		ApplicationEnvironmentContext.ENVIRONMENT = environment;
 	}
 
-	public static String title;
+	public static String TITLE;
 	@Value("${project.title}")
 	public void setTitle(String title) {
-		ApplicationEnvironmentContext.title = title;
+		ApplicationEnvironmentContext.TITLE = title;
 	}
 
-	public static String version;
+	public static String VERSION;
 	@Value("${project.version:main}")
 	public void setVersion(String version) {
-		ApplicationEnvironmentContext.version = version;
+		ApplicationEnvironmentContext.VERSION = version;
 	}
 
-	public static String details;
+	public static String DETAILS;
 	@Value("${project.details}")
 	public void setDetails(String details) {
-		ApplicationEnvironmentContext.details = details;
+		ApplicationEnvironmentContext.DETAILS = details;
 	}
 	
-	public static Environment environmentConfig;
+	public static Environment CONFIG;
 	@Resource
 	public void setEnvironmentConfig(Environment environmentConfig) {
-		ApplicationEnvironmentContext.environmentConfig=environmentConfig;
+		ApplicationEnvironmentContext.CONFIG = environmentConfig;
 	}
 
-	
 }

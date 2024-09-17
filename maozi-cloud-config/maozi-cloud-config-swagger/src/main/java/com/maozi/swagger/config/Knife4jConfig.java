@@ -57,9 +57,9 @@ public class Knife4jConfig {
         return new OpenAPI()
             .components(components)
             .info(new Info()
-                .title(ApplicationEnvironmentContext.title)
-                .version(ApplicationEnvironmentContext.version)
-                .description(ApplicationEnvironmentContext.details)
+                .title(ApplicationEnvironmentContext.TITLE)
+                .version(ApplicationEnvironmentContext.VERSION)
+                .description(ApplicationEnvironmentContext.DETAILS)
                 .termsOfService("http://maozi.com")
                 .license(new License().name("Apache 2.0").url("http://maozi.com")));
     }
@@ -73,7 +73,7 @@ public class Knife4jConfig {
 
         apiWhitelistAll.addAll(apiWhitelist.getDefaultWitelist());
 
-        return GroupedOpenApi.builder().group(ApplicationEnvironmentContext.applicationName)
+        return GroupedOpenApi.builder().group(ApplicationEnvironmentContext.APPLICATION_NAME)
 
             .addOperationCustomizer((operation, handlerMethod) -> {
 

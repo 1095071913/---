@@ -59,12 +59,6 @@
 
 		<dependency>
 			<groupId>com.maozi</groupId>
-			<artifactId>maozi-cloud-config-web</artifactId>
-			<version>${maozi-cloud-config-web.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.maozi</groupId>
 			<artifactId>maozi-cloud-config-swagger</artifactId>
 			<version>${maozi-cloud-config-swagger.version}</version>
 		</dependency>
@@ -98,15 +92,7 @@
 			<artifactId>maozi-cloud-config-lock</artifactId>
 			<version>${maozi-cloud-config-lock.version}</version>
 		</dependency>
-		<!-- Project End --> 
-
-
-		<!-- SpringCloud Begin -->
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-		</dependency>
-		<!-- SpringCloud End -->
+		<!-- Project End -->
 
 
 	</dependencies>

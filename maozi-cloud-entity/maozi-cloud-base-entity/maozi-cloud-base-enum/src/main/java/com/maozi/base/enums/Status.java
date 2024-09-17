@@ -1,20 +1,10 @@
 package com.maozi.base.enums;
 
-import com.maozi.base.IEnum;
+import com.maozi.base.BaseEnum;
 import lombok.Getter;
 import lombok.Setter;
 
-/**  
- * @Title: Status.java
- *
- * @Description: TODO
- *
- * @Author: 彭晋龙
- *
- * @Date: 2023-03-22 11:21:04
- *
- */
-public enum Status implements IEnum {
+public enum Status implements BaseEnum {
 	
 	disable(0,"禁用"),enable(1,"启用");
 	

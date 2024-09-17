@@ -1,10 +1,10 @@
 package com.maozi.base.enums;
 
-import com.maozi.base.IEnum;
+import com.maozi.base.BaseEnum;
 import lombok.Getter;
 import lombok.Setter;
 
-public enum StoreClassType implements IEnum {
+public enum StoreClassType implements BaseEnum {
 
     db(0,"数据库");
 

@@ -1,8 +1,9 @@
 package com.maozi.mvc.config.rest;
 
 import com.google.common.collect.Maps;
+import com.maozi.base.CodeData;
 import com.maozi.common.BaseCommon;
-import com.maozi.common.result.code.CodeAttribute;
+import com.maozi.mvc.config.code.CodeConfig;
 import com.maozi.mvc.config.error.ErrorParamTranslation;
 import java.util.Map;
 import org.springframework.http.HttpHeaders;
@@ -48,7 +49,7 @@ public class ErrorRestHandler extends ResponseEntityExceptionHandler {
 			
 			methodArgumentNotValidException.getBindingResult().getFieldErrors().stream().forEach(fieldError -> errorMessages.put(fieldError.getField(), fieldError.getDefaultMessage()));
 			
-			return new ResponseEntity<>(BaseCommon.error(new CodeAttribute<Map<String,String>>(400,"参数错误",errorMessages),status.value()), headers, status);
+			return new ResponseEntity<>(BaseCommon.error(new CodeData<Map<String,String>>(400,"参数错误",errorMessages),status.value()), headers, status);
 		
 		}else if (ex instanceof MissingServletRequestParameterException) {
 			
@@ -60,13 +61,14 @@ public class ErrorRestHandler extends ResponseEntityExceptionHandler {
 				paramErrorMessage=missingServletRequestParameterException.getParameterName();
 			}
 			
-			return new ResponseEntity<>(BaseCommon.error(new CodeAttribute(400,missingServletRequestParameterException.getParameterName()+"不能为空"),status.value()), headers, status);
+			return new ResponseEntity<>(BaseCommon.error(new CodeData(400,missingServletRequestParameterException.getParameterName()+"不能为空"),status.value()), headers, status);
 			
 		}else {
 			BaseCommon.error(ex.getLocalizedMessage()); 
 		}
 		
-		return new ResponseEntity<>(BaseCommon.error(BaseCommon.baseCode(status.value()),status.value()), headers, status);
+		return new ResponseEntity<>(BaseCommon.error(CodeConfig.getCode(status.value()),status.value()), headers, status);
+
 	}
 
 }

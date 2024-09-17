@@ -1,6 +1,6 @@
 package com.maozi.lock.lock;
 
-import com.maozi.base.IEnum;
+import com.maozi.base.BaseEnum;
 import com.maozi.lock.error.strategy.impl.LockTimeoutStrategy;
 import com.maozi.lock.error.strategy.impl.UnLockTimeoutStrategy;
 import com.maozi.lock.lock.impl.FairLock;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.Setter;
 
-public enum LockType implements IEnum {
+public enum LockType implements BaseEnum {
 
     Reentrant(0,"可重入锁",ReentrantLock.class),Fair(1,"公平锁", FairLock.class),Read(2,"读锁", ReadLock.class),Write(3,"写锁", WriteLock.class);
 
@@ -106,7 +106,7 @@ public enum LockType implements IEnum {
 
         Lock lock = getLock();
 
-        key = ApplicationEnvironmentContext.applicationName +":lock:" + key;
+        key = ApplicationEnvironmentContext.APPLICATION_NAME +":lock:" + key;
 
         if(!lock.lock(key,waitTime,leaseTime)) {
             strategy.handle(key,waitTime,leaseTime, lock);
@@ -122,7 +122,7 @@ public enum LockType implements IEnum {
 
         Lock lock = getLock();
 
-        key = ApplicationEnvironmentContext.applicationName +":lock:" + key;
+        key = ApplicationEnvironmentContext.APPLICATION_NAME +":lock:" + key;
 
         if (!lock.unLock(key)) {
             strategy.handle();

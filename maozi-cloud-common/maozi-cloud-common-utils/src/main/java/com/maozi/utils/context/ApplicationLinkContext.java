@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class ApplicationLinkContext {
 
-    public static TransmittableThreadLocal<String> VERSIONS = new TransmittableThreadLocal();
+    public static TransmittableThreadLocal<String> VERSIONS = new TransmittableThreadLocal<>();
 
-    public static TransmittableThreadLocal<String> USERNAMES = new TransmittableThreadLocal();
+    public static TransmittableThreadLocal<String> USERNAMES = new TransmittableThreadLocal<>();
 
     public static void set(String version,String username){
 

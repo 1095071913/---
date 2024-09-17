@@ -1,5 +1,6 @@
 package com.maozi.oauth.token.api.rest.v1.fallback;
 
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import com.maozi.common.result.AbstractBaseResult;
 import com.maozi.common.result.error.ErrorResult;
@@ -14,7 +15,7 @@ import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OauthTokenServiceRestFallBackFactory extends BaseCommon implements FallbackFactory<RestOauthTokenServiceV1>{
+public class OauthTokenServiceRestFallBackFactory extends BaseCommon<SystemErrorCode> implements FallbackFactory<RestOauthTokenServiceV1>{
 
 	@Override
 	public RestOauthTokenServiceV1 create(Throwable e) {

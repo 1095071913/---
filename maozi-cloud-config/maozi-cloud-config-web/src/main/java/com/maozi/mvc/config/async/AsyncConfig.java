@@ -21,6 +21,7 @@ package com.maozi.mvc.config.async;
 import java.util.concurrent.ThreadPoolExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 public class AsyncConfig {
@@ -29,20 +30,25 @@ public class AsyncConfig {
 
 	private static final int MAX_POOL_SIZE = 256;
 
-	private static final int KEEP_ALIVE_TIME = 10; // 允许线程空闲时间（单位为秒）
+	// 允许线程空闲时间（单位为秒）
+	private static final int KEEP_ALIVE_TIME = 10;
 
-	private static final int QUEUE_CAPACITY = 1024; // 缓冲队列数
+	// 缓冲队列数
+	private static final int QUEUE_CAPACITY = 1024;
 
-	private static final int AWAIT_TERMINATION = 60;// 线程池中任务的等待时间，如果超过这个时候还没有销毁就强制销毁
+	// 线程池中任务的等待时间，如果超过这个时候还没有销毁就强制销毁
+	private static final int AWAIT_TERMINATION = 60;
 
-	private static final Boolean WAIT_FOR_TASKS_TO_COMPLETE_ON_SHUTDOWN = true;// 用来设置线程池关闭的时候等待所有任务都完成再继续销毁其他的Bean
+	// 用来设置线程池关闭的时候等待所有任务都完成再继续销毁其他的Bean
+	private static final Boolean WAIT_FOR_TASKS_TO_COMPLETE_ON_SHUTDOWN = true;
 
-	private static final String THREAD_NAME_PREFIX = "Async-Service-"; // 线程池名前缀
+	// 线程池名前缀
+	private static final String THREAD_NAME_PREFIX = "Async-Service-";
 
 	@Bean("applicationTaskExecutor")
-	public IThreadPoolTaskExecutor AsyncTaskExecutor() {
+	public ThreadPoolTaskExecutor asyncTaskExecutor() {
 
-		IThreadPoolTaskExecutor taskExecutor = new IThreadPoolTaskExecutor();
+		ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
 
 		taskExecutor.setCorePoolSize(CORE_POOL_SIZE);
 

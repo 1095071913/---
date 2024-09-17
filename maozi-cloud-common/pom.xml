@@ -12,11 +12,13 @@
 	<packaging>pom</packaging>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>${hutool-all.version}</version>
+			<version>${hutool.version}</version>
 		</dependency>
+
 	</dependencies>
 
 	<modules>

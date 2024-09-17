@@ -51,7 +51,7 @@ public class LockAop {
 
         String lockName = BaseCommon.isNotEmpty(annotation.name()) ? annotation.name() : signature.getDeclaringTypeName()+ "." +signature.getMethod().getName();
 
-        lockName = ApplicationEnvironmentContext.applicationName + ":lock:" + lockName + businessKeyName;
+        lockName = ApplicationEnvironmentContext.APPLICATION_NAME + ":lock:" + lockName + businessKeyName;
 
         long waitTime = annotation.waitTime() == Long.MIN_VALUE ? properties.getWaitTime() : annotation.waitTime();
 

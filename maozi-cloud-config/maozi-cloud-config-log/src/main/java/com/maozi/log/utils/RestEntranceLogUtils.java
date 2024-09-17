@@ -1,5 +1,6 @@
 package com.maozi.log.utils;
 
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestEntranceLogUtils extends BaseCommon {
+public class RestEntranceLogUtils extends BaseCommon<SystemErrorCode> {
 
 	public Map<String, String> logRequest(ProceedingJoinPoint proceedingJoinPoint,HttpServletRequest request,String rpcUrl) {
     	

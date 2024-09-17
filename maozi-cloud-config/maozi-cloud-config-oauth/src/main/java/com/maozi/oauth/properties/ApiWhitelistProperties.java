@@ -23,8 +23,7 @@ public class ApiWhitelistProperties {
     		
     		add("/actuator/**");
     		add("/application/**");
-    		
-			add("/doc.html");
+
 			add("/v3/api-docs/**");
 			
     	}

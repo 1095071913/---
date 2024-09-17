@@ -17,9 +17,10 @@
 
 package com.maozi.oauth.config;
 
+import com.maozi.base.CodeData;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import com.maozi.common.result.AbstractBaseResult;
-import com.maozi.common.result.code.CodeAttribute;
 import com.maozi.utils.MapperUtils;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,24 +28,24 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-public class IAuthenticationEntryPoint extends BaseCommon implements AuthenticationEntryPoint {
+public class IAuthenticationEntryPoint extends BaseCommon<SystemErrorCode> implements AuthenticationEntryPoint {
 	
-	private Integer errorCode=401;
+	private Integer errorCode = 401;
 	
 	@Override
 	public void commence(HttpServletRequest request,HttpServletResponse response,AuthenticationException authException) throws ServletException {
 		
 		try {  
-			
+
 			String errorMessage = "Full authentication is required to access this resource".equals(authException.getMessage()) ? "未携带Token" : authException.getMessage();
 
-			AbstractBaseResult error = error(new CodeAttribute(401,errorMessage),errorCode).autoIdentifyHttpCode();
+			AbstractBaseResult error = error(new CodeData(errorCode,errorMessage),errorCode).autoIdentifyHttpCode();
 			
-			MapperUtils.getInstance().writeValue(response.getOutputStream(),error);
+			MapperUtils.setResponseBody(response,error);
 			
 		} catch (Exception e) {
 
-			log.error(getStackTrace(e));
+			BaseCommon.error(e);
 
 			throw new ServletException();
 

@@ -20,19 +20,7 @@ package com.maozi.ss.api;
 import com.alibaba.fastjson.JSONObject;
 import java.util.Map;
 
-/**	
- * 
- *  Specifications：功能
- * 
- *  Author：彭晋龙
- * 
- *  Creation Date：2021-12-18:16:32:34
- *
- *  Copyright Ownership：xiao mao zi
- * 
- *  Agreement That：Apache 2.0
- * 
- */
+
 
 public interface SSService {
 

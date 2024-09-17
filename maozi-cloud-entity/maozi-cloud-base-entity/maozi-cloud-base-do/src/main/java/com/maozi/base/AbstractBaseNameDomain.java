@@ -16,11 +16,7 @@
 
 package com.maozi.base;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
-import com.gitee.sunchenbin.mybatis.actable.annotation.Index;
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,11 +27,11 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class AbstractBaseNameDomain extends AbstractBaseDomain implements Serializable {
+public abstract class AbstractBaseNameDomain extends AbstractBaseDomain {
 
-	@Index
-	@Column(comment = "名称")
-	@TableField(value = "name")
+	/**
+	 * 名称
+	 */
 	private String name;
 
 }

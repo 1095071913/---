@@ -22,9 +22,9 @@ import static com.maozi.common.BaseCommon.isNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
+import com.maozi.base.CodeData;
 import com.maozi.common.BaseCommon;
 import com.maozi.common.result.AbstractBaseResult;
-import com.maozi.common.result.code.CodeAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import lombok.Data;
@@ -52,24 +52,54 @@ public class ErrorResult<D> extends AbstractBaseResult<D> implements Serializabl
 	@Schema(description = "错误数据")
 	private D data;
 
-	public ErrorResult(CodeAttribute<D> codeData) {
+	public ErrorResult(CodeData<D> codeData) {
 		
-		code=codeData.getCode();
-		data=codeData.getData();
-		message=codeData.getMessage();
+		code = codeData.getCode();
+		data = codeData.getData();
+		message = codeData.getMessage();
 		
 		this.setHttpCode(400);
 		
 	}
+
+	public ErrorResult(String serviceName,CodeData<D> codeData) {
+
+		code = codeData.getCode();
+		data = codeData.getData();
+		message = serviceName + codeData.getMessage();
+
+		this.setHttpCode(400);
+
+	}
+
+	public ErrorResult(String serviceName,CodeData<D> codeData,Integer httpCode) {
+
+		code = codeData.getCode();
+		data = codeData.getData();
+		message = serviceName + codeData.getMessage();
+
+		this.setHttpCode(httpCode);
+
+	}
 	
-	public ErrorResult(Integer httpCode,CodeAttribute<D> codeData) {
+	public ErrorResult(Integer httpCode, CodeData<D> codeData) {
 		
-		code=codeData.getCode();
-		data=codeData.getData();
-		message=codeData.getMessage();
+		code = codeData.getCode();
+		data = codeData.getData();
+		message = codeData.getMessage();
 		
 		this.setHttpCode(httpCode);
 		
+	}
+
+	public ErrorResult(CodeData<D> codeData,D errorData) {
+
+		code = codeData.getCode();
+		data = errorData;
+		message = codeData.getMessage();
+
+		this.setHttpCode(httpCode);
+
 	}
 
 	@JsonIgnore

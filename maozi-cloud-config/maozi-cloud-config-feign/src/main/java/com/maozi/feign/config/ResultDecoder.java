@@ -5,7 +5,6 @@ import com.maozi.common.result.success.SuccessResult;
 import com.maozi.utils.MapperUtils;
 import feign.FeignException;
 import feign.Response;
-import feign.codec.DecodeException;
 import feign.codec.Decoder;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,19 +30,15 @@ public class ResultDecoder implements Decoder {
 	private ObjectFactory<HttpMessageConverters> messageConverters;
 
     @Override
-    public Object decode(Response response, Type type) throws IOException, DecodeException, FeignException {
+    public Object decode(Response response, Type type) throws IOException, FeignException {
     	
     	Type dataType = ((ParameterizedType)type).getActualTypeArguments()[0];
     	
     	HttpMessageConverterExtractor<?> extractor = new HttpMessageConverterExtractor(dataType, this.messageConverters.getObject().getConverters());
     	
     	LinkedHashMap<String, Object> extractData = (LinkedHashMap<String, Object>) extractor.extractData(new FeignResponseAdapter(response));
-    	
-    	if(type.getTypeName().contains(AbstractBaseResult.class.getName())) {
-    		return MapperUtils.map2pojo(extractData, SuccessResult.class);
-    	}else {
-    		return MapperUtils.map2pojo(extractData, dataType);
-    	}
+
+		return type.getTypeName().contains(AbstractBaseResult.class.getName()) ? MapperUtils.mapToPojo(extractData, SuccessResult.class) : MapperUtils.mapToPojo(extractData, dataType);
     	
     }
     

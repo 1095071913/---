@@ -1,5 +1,6 @@
 package com.maozi.lock.error.strategy.impl;
 
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.result.error.exception.BusinessResultException;
 import com.maozi.lock.error.strategy.LockTimeoutHandler;
 import com.maozi.lock.lock.Lock;
@@ -10,7 +11,7 @@ public enum LockTimeoutStrategy implements LockTimeoutHandler {
     FAIL_FAST() {
         @Override
         public void handle(String key,Long waitTime,Long leaseTime,Lock lock) throws Exception {
-            throw new BusinessResultException(429,"限流中",429);
+            throw new BusinessResultException(SystemErrorCode.CURRENT_LIMITING_ERROR,429);
         }
     },
 
@@ -28,7 +29,7 @@ public enum LockTimeoutStrategy implements LockTimeoutHandler {
             while (!lock.lock(key,waitTime,leaseTime)) {
 
                 if (interval > DEFAULT_MAX_INTERVAL) {
-                    throw new BusinessResultException(429,"限流中",429);
+                    throw new BusinessResultException(SystemErrorCode.CURRENT_LIMITING_ERROR,429);
                 }
 
                 TimeUnit.MILLISECONDS.sleep(interval);

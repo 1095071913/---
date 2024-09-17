@@ -19,7 +19,6 @@
 		</dependency>
 		<!-- SpringBoot End -->
 
-
 		<!-- Project Begin -->
 		<dependency>
 			<groupId>com.maozi</groupId>

@@ -4,7 +4,6 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.nacos.shaded.com.google.common.collect.Sets;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.base.MPJBaseService;
@@ -12,6 +11,7 @@ import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.github.yulichang.toolkit.MPJWrappers;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.google.common.collect.Lists;
+import com.maozi.base.AbstractBaseCode;
 import com.maozi.base.AbstractBaseDomain;
 import com.maozi.base.AbstractBaseDtomain;
 import com.maozi.base.AbstractBaseNameDomain;
@@ -51,7 +51,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends AbstractBaseDomain,D> extends MPJBaseServiceImpl<M, T> implements MPJBaseService<T>,BaseServiceResult<D> {
+public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends AbstractBaseDomain,D extends AbstractBaseDtomain, E extends AbstractBaseCode> extends MPJBaseServiceImpl<M, T ,E> implements MPJBaseService<T>,BaseServiceResult<D> {
 
 	protected Class<T> doClass;
 	
@@ -89,7 +89,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     public Class<D> getDtoClass(){
     
     	if(dtoClass.getName().equals(Void.class.getName())) {
-    		throw new BusinessResultException(500,"服务端未设置返回类型",500);
+    		throw new BusinessResultException(getBaseCodes().NOT_SET_RESPONSE_ERROR,500);
     	}
     	
     	return dtoClass;
@@ -104,7 +104,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
 		return new PageResult<D>(page.getCurrent(),page.getSize(),page.getTotal(),copyList(page.getRecords(),target));
 	}
     
-    protected <D> PageResult convertPageResult(IPage page,List<D> responseDatas) {
+    protected <D> PageResult convertPageResult(Page<T> page,List<D> responseDatas) {
 		return new PageResult<D>(page.getCurrent(),page.getSize(),page.getTotal(),responseDatas);
 	}
 
@@ -117,27 +117,27 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
 	}
     
     protected <D> String getColumn(SFunction<D, ?> sfunction) {
-		
+
     	try {
-    		
+
     		Method method = sfunction.getClass().getDeclaredMethod("writeReplace");
-    		
+
             method.setAccessible(true);
-            
+
             SerializedLambda serializedLambda = (SerializedLambda) method.invoke(sfunction);
-            
+
             String fieldWithGet = serializedLambda.getImplMethodName();
-            
+
             return StrUtil.toUnderlineCase(fieldWithGet.substring(3));
-    		
+
     	}catch (Exception e) {
-    		
+
 			throwSystemError(e);
-			
+
 			return null;
-			
+
 		}
-    	
+
 	}
     
     protected <D> String[] getColumns(SFunction<D, ?> ... sfunctions) {
@@ -236,7 +236,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     	
     	isNullThrowError(domain, getAbbreviationModelName());
     	
-    	checkBoolThrowError(domain.getStatus() == Status.enable,getAbbreviationModelName()+"已被禁用");
+    	checkBoolThrowError(domain.getStatus() == Status.enable,getAbbreviationModelName(),getBaseCodes().FORBIDDEN_ERROR);
     	
 	}
     
@@ -255,7 +255,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     	domains.parallelStream().forEach((domain)->{
     		
     		if(domain.getStatus() == Status.disable) {
-        		throw new BusinessResultException(400, getAbbreviationModelName()+"已被禁用",200);
+        		throw new BusinessResultException(getAbbreviationModelName(),getBaseCodes().FORBIDDEN_ERROR,200);
         	}
     		
     	});
@@ -279,7 +279,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     	isNullThrowError(domain, getAbbreviationModelName());
     	
     	if(domain.getStatus() == Status.disable) {
-    		throw new BusinessResultException(400, getAbbreviationModelName()+"已被禁用",200);
+    		throw new BusinessResultException(getAbbreviationModelName(),getBaseCodes().FORBIDDEN_ERROR,200);
     	}
     	
     	return domain;
@@ -295,7 +295,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     	isNullThrowError(domain, getAbbreviationModelName());
     	
     	if(domain.getStatus() == Status.disable) {
-    		throw new BusinessResultException(400, getAbbreviationModelName()+"已被禁用",200);
+    		throw new BusinessResultException(getAbbreviationModelName(),getBaseCodes().FORBIDDEN_ERROR,200);
     	}
     	
     	return domain;
@@ -303,11 +303,11 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
 	}
     
     protected void checkHas(Wrapper<T> wrapper) {
-    	checkBoolThrowError(count(wrapper) > 0, getAbbreviationModelName()+"不存在");
+    	checkBoolThrowError(count(wrapper) > 0, getAbbreviationModelName(),getBaseCodes().DATA_NOT_EXIST_ERROR);
 	}
     
     protected void checkNotHas(Wrapper<T> wrapper) {
-    	checkBoolThrowError(count(wrapper) < 1, getAbbreviationModelName()+"已存在");
+    	checkBoolThrowError(count(wrapper) < 1, getAbbreviationModelName(),getBaseCodes().DATA_EXIST_ERROR);
 	}
     
     protected DropDownResult dropDown(Long id){
@@ -390,11 +390,11 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
 		
 		isNullThrowError(domain, getAbbreviationModelName());
 		
-		D reponse = copy(domain, clazz);
+		D response = copy(domain, clazz);
 		
-		setRelationData(reponse, clazz);
+		setRelationData(response, clazz);
 		
-		return reponse;
+		return response;
     	
 	}
     
@@ -406,18 +406,32 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     	return copy(getByIdThrowError(id,columns), clazz);
 	}
     
-    protected <V,D> V getByIdThrowErrorRelation(Long id,Class<V> clazz) {
+    protected <V> V getByIdThrowErrorRelation(Long id,Class<V> clazz) {
 
-		MPJLambdaWrapper<T> wrapper = MPJWrappers.<T>lambdaJoin();
-
-		setQueryMappingWrapper(clazz,wrapper);
-
-		V response = copy(getByIdThrowError(id,wrapper), clazz);
+		V response = copy(getByIdThrowError(id,getColumns(clazz)), clazz);
     	
     	setRelationData(response, clazz);
     	
     	return response;
     	
+	}
+
+	protected <V,D> V getByParamThrowErrorRelation(D dto,Class<V> clazz) {
+
+		isNullThrowError(dto, getAbbreviationModelName());
+
+		MPJLambdaWrapper<T> wrapper = buildQueryWrapper(dto,clazz);
+
+		wrapper.select(getColumns(clazz));
+
+		V response = copy(getOne(wrapper), clazz);
+
+		isNullThrowError(response, getAbbreviationModelName());
+
+		setRelationData(response, clazz);
+
+		return response;
+
 	}
     
     protected List<T> listByIds(Collection<?> ids,String ... columns) {
@@ -457,6 +471,32 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     	return copyList(list, target);
     	
 	}
+
+	protected <V> List<V> list(D dto,Supplier<V> target) {
+
+		isNullThrowError(dto, getAbbreviationModelName());
+
+		V vo = target.get();
+
+		List<T> list = list(buildQueryWrapper(dto, vo.getClass()));
+
+		return copyList(list, () -> vo);
+
+	}
+
+	protected <V> List<V> listRelation(D dto,Supplier<V> target) {
+
+		isNullThrowError(dto, getAbbreviationModelName());
+
+		V vo = target.get();
+
+		List<T> list = list(buildQueryWrapper(dto,vo.getClass()));
+
+		setRelationData(dto,vo.getClass());
+
+		return copyList(list, () -> vo);
+
+	}
     
     protected <V> PageResult<V> list(PageParam pageParam,Wrapper<T> wrapper,Supplier<V> target) {
 		
@@ -466,9 +506,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     	
 	}
     
-    protected <V> PageResult<V> list(PageParam pageParam,Supplier<V> target) {
-
-		Class clazz = target.get().getClass();
+    protected <V> PageResult<V> list(PageParam pageParam,Class<V> clazz) {
 		
     	Page<V> page = selectJoinListPage(convertPage(pageParam),clazz,buildQueryWrapper(pageParam.getData(),clazz));
     	
@@ -480,14 +518,22 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     	return page(convertPage(pageParam),wrapper);
 	}
     
-    protected <V> PageResult<V> listRelation(PageParam pageParam,Supplier<V> target) {
+    protected <V> PageResult<V> listRelation(PageParam pageParam,Class<V> clazz) {
     	
-    	PageResult<V> page = list(pageParam,target);
+    	PageResult<V> page = list(pageParam,clazz);
 		
-		setRelationData(page, target.get().getClass());
+		setRelationData(page, clazz);
 		
 		return page;
 		
+	}
+
+	protected <D> Long getCountByParam(D dto){
+
+		isNullThrowError(dto,getAbbreviationModelName());
+
+		return count(buildQueryWrapper(dto));
+
 	}
     
     public boolean saveUpdate(T domain) {
@@ -500,7 +546,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     		
     		wrapper.eq(getColumn(AbstractBaseDomain::getId), domain.getId());
     		
-    		checkBoolThrowError(count(wrapper) > 0,getAbbreviationModelName()+"不存在");
+    		checkBoolThrowError(count(wrapper) > 0,getAbbreviationModelName(),getBaseCodes().DATA_NOT_EXIST_ERROR);
     		
     	}
     	
@@ -523,7 +569,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
     		
     		wrapper.eq(getColumn(AbstractBaseDomain::getId), domain.getId());
     		
-    		checkBoolThrowError(count(wrapper) > 0,getAbbreviationModelName()+"不存在");
+    		checkBoolThrowError(count(wrapper) > 0,getAbbreviationModelName(),getBaseCodes().DATA_NOT_EXIST_ERROR);
     		
     	}else {
     		validate(param);
@@ -547,7 +593,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
 
 				wrapper.eq(getColumn(AbstractBaseDomain::getId), domain.getId());
 
-				checkBoolThrowError(count(wrapper) > 0,getAbbreviationModelName()+"不存在");
+				checkBoolThrowError(count(wrapper) > 0,getAbbreviationModelName(),getBaseCodes().DATA_NOT_EXIST_ERROR);
 
 			}
 
@@ -647,11 +693,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
 	
     @Override
 	public AbstractBaseResult<Long> getCountByParamResult(D dto){
-    	
-    	isNullThrowError(dto,getAbbreviationModelName());
-    	
-		return success(count(MPJWrappers.lambdaJoin(copy(dto, doClass))));
-		
+		return success(getCountByParam(dto));
 	}
 	
 	@Override
@@ -689,11 +731,7 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
 		collectionIsEmptyThrowError(ids, getAbbreviationModelName()+"列表");
 		
 		ids.parallelStream().forEach((id)->{
-			
-			checkBind(id);
-			
 			removeById(id);
-			
 		});
 		
 		return success(null);
@@ -872,15 +910,15 @@ public abstract class BaseServiceImpl<M extends IBaseMapper<T>, T extends Abstra
 
 					String tableName = annotation.tableName();
 
-					isEmptyThrowError(tableName,getAbbreviationModelName()+"映射关系名称");
+					throwSystemError(isNotEmpty(tableName),getAbbreviationModelName()+"映射关系名称");
 
 					String fieldName = isNotEmpty(annotation.field()) ? annotation.field() : field.getName();
 
 					Class<?> relationClazz = StoreClass.storeClassMap.get(StoreClassType.db).get(tableName);
 
-					isNullThrowError(relationClazz,"映射关系");
+					throwSystemError(isNotNull(relationClazz),getAbbreviationModelName()+"映射关系");
 
-					checkBoolThrowError(!type.isPrimitive(),getAbbreviationModelName()+"映射关系类型错误");
+					throwSystemError(!type.isPrimitive(),getAbbreviationModelName()+"映射关系类型错误");
 
 					if(type.equals(List.class)){
 

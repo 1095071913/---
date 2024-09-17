@@ -18,8 +18,9 @@
 package com.maozi.wx.api.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.maozi.base.CodeData;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
-import com.maozi.common.result.code.CodeAttribute;
 import com.maozi.common.result.error.exception.BusinessResultException;
 import com.maozi.mvc.config.rest.RestTemplate;
 import com.maozi.wx.api.WxService;
@@ -35,21 +36,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/**	
- * 
- *  Specifications：功能
- * 
- *  Author：彭晋龙
- * 
- *  Creation Date：2021-12-18:16:32:34
- *
- *  Copyright Ownership：xiao mao zi
- * 
- *  Agreement That：Apache 2.0
- * 
- */
 
-public class WxServiceImpl extends BaseCommon implements WxService{
+
+public class WxServiceImpl extends BaseCommon<SystemErrorCode> implements WxService{
 	
 	@Resource
 	protected RestTemplate restClient;
@@ -74,11 +63,11 @@ public class WxServiceImpl extends BaseCommon implements WxService{
 		}
 		
 		if(isNull(vxResult)) {
-			throw new BusinessResultException(new CodeAttribute(500,"企业微信服务不可用",500));
+			throw new BusinessResultException(new CodeData(500,"企业微信服务不可用",500));
 		}
 		
 		if(isNull(vxResult) || vxResult.getStatusCodeValue() != 200 || vxResult.getBody().getInteger("errcode")!=0) {
-			throw new BusinessResultException(new CodeAttribute(vxResult.getBody().getInteger("errcode"),vxResult.getBody().getString("errmsg")),vxResult.getStatusCodeValue());
+			throw new BusinessResultException(new CodeData(vxResult.getBody().getInteger("errcode"),vxResult.getBody().getString("errmsg")),vxResult.getStatusCodeValue());
 		}
 		
 		return vxResult.getBody();

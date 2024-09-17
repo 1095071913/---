@@ -11,15 +11,21 @@
     
   <dependencies>
 
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>com.maozi</groupId>
+      <artifactId>maozi-cloud-config-web</artifactId>
+      <version>${maozi-cloud-config-web.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>com.maozi</groupId>
       <artifactId>maozi-cloud-service-base-rest-api</artifactId>
       <version>${maozi-cloud-service-base-rest-api.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
     </dependency>
 
   </dependencies>

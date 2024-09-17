@@ -19,6 +19,7 @@
 package com.maozi.stream.config;
 
 import com.maozi.base.enums.EnvironmentType;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import com.maozi.utils.context.ApplicationLinkContext;
 import java.util.LinkedHashMap;
@@ -36,7 +37,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Order(value = Ordered.HIGHEST_PRECEDENCE + 1 )
-public class StreamEntranceLogAop extends BaseCommon {
+public class StreamEntranceLogAop extends BaseCommon<SystemErrorCode> {
 
 	private final String POINT = "execution(java.util.function.Consumer com.maozi.*.*.stream..*(..))";
 

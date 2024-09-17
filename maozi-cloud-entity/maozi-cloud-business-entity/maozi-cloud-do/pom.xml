@@ -13,18 +13,15 @@
 	<dependencies>
 		
 		<!-- Project Begin -->
-
 		<dependency>    
 			<groupId>com.maozi</groupId>   
 			<artifactId>maozi-cloud-base-do</artifactId>
 			<version>${maozi-cloud-base-do.version}</version>
 		</dependency>
-		
 		<!-- Project End -->
 
 	</dependencies>
-	
-	
+
 	
 	<modules>
 		<module>maozi-cloud-seata-do</module>

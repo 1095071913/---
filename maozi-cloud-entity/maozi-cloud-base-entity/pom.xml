@@ -12,6 +12,13 @@
 
 
     <dependencies>
+
+      <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>${swagger.version}</version>
+      </dependency>
+
       <!-- Project Begin -->
       <dependency>
         <groupId>com.maozi</groupId>
@@ -19,7 +26,9 @@
         <version>${maozi-cloud-common-utils.version}</version>
       </dependency>
       <!-- Project End -->
+
     </dependencies>
+
 
     <modules>
       <module>maozi-cloud-base-do</module>

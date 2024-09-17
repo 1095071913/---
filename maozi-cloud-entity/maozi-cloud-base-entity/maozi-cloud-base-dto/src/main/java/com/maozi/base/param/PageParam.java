@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PageParam<D> extends AbstractBaseDtomain {
 
-	@Schema(description = "页数",example = "1")
-	private Long current=1L;
+	@Schema(description = "页数",defaultValue = "1")
+	private Long current = 1L;
 	
-	@Schema(description = "每页数量",example = "10")
-	private Long size=10L;
+	@Schema(description = "每页数量",defaultValue = "10")
+	private Long size = 10L;
 	
 	@Valid
 	@Schema(description = "查询条件")

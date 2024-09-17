@@ -20,9 +20,11 @@ package com.maozi.common.result;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import com.maozi.common.result.error.ErrorResult;
 import com.maozi.common.result.error.exception.BusinessResultException;
+import com.maozi.utils.context.ApplicationEnvironmentContext;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import lombok.Data;
@@ -36,6 +38,9 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractBaseResult<D> implements Serializable {
+
+	@Schema(description = "服务名称")
+	private String applicationName = ApplicationEnvironmentContext.APPLICATION_NAME;
 	
 	@Schema(description = "数据")
 	public abstract D getData();
@@ -54,14 +59,6 @@ public abstract class AbstractBaseResult<D> implements Serializable {
 	}
 	
 	@JsonIgnore
-	public <C> C getSuccessResultThrowError() {
-		if(!isSuccess()) {
-			throwError();
-		}
-		return getResult();
-	}
-	
-	@JsonIgnore
 	public D getResultDataThrowError() {
 		if(!isSuccess()) {
 			throwError();
@@ -70,14 +67,14 @@ public abstract class AbstractBaseResult<D> implements Serializable {
 	}
 	
 	@JsonIgnore
-	public D getResultNotNullDataThrowError(String message) {
+	public D getResultNotNullDataThrowError(String serviceName) {
 		
 		if(!isSuccess()) {
 			throwError();
 		}
 		
 		if(BaseCommon.isNull(getData())) {
-			throw new BusinessResultException(message+"不存在",404);
+			throw new BusinessResultException(serviceName, SystemErrorCode.DATA_NOT_EXIST_ERROR,404);
 		}
 		
 		return getData();

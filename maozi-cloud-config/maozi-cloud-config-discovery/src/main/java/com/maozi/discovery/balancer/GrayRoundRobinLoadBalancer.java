@@ -1,6 +1,7 @@
 package com.maozi.discovery.balancer;
 
 import com.google.common.collect.Lists;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import com.maozi.common.result.error.exception.BusinessResultException;
 import java.util.List;
@@ -55,7 +56,7 @@ public class GrayRoundRobinLoadBalancer implements ReactorServiceInstanceLoadBal
     private Response<ServiceInstance> getInstanceResponse(List<ServiceInstance> instances, HttpHeaders headers) {
 
         if(BaseCommon.collectionIsEmpty(instances)){
-            throw new BusinessResultException(404,"服务不存在",404);
+            throw new BusinessResultException(SystemErrorCode.SERVICE_NOT_EXIST_ERROR,404);
         }
 
         String version = headers.getFirst("Version");
@@ -83,7 +84,7 @@ public class GrayRoundRobinLoadBalancer implements ReactorServiceInstanceLoadBal
         List<ServiceInstance> applicationClients = BaseCommon.collectionIsNotEmpty(grayApplicationClients) ? grayApplicationClients : mainApplicationClients;
 
         if(applicationClients.size() == 0){
-            throw new BusinessResultException(404,"服务不存在",404);
+            throw new BusinessResultException(SystemErrorCode.SERVICE_NOT_EXIST_ERROR,404);
         }
 
         int pos = this.position.incrementAndGet() & Integer.MAX_VALUE;

@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>33.0.0-jre</version>
+			<version>33.2.1-jre</version>
 		</dependency>
 
 		<dependency>
@@ -55,7 +55,13 @@
 
 
 	</dependencies>
-
+	<repositories>
+		<repository>
+			<id>maven_central</id>
+			<name>Maven Central</name>
+			<url>https://repo.maven.apache.org/maven2/</url>
+		</repository>
+	</repositories>
 
 
 </project>

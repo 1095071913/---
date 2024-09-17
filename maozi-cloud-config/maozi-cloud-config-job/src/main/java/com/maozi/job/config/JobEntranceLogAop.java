@@ -1,6 +1,7 @@
 package com.maozi.job.config;
 
 import com.maozi.base.enums.EnvironmentType;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import com.maozi.utils.context.ApplicationEnvironmentContext;
 import com.maozi.utils.context.ApplicationLinkContext;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Order(value = Ordered.HIGHEST_PRECEDENCE + 1 )
-public class JobEntranceLogAop extends BaseCommon {
+public class JobEntranceLogAop extends BaseCommon<SystemErrorCode> {
 
     @Around("@annotation(com.xxl.job.core.handler.annotation.XxlJob)")
     public void around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -30,7 +31,7 @@ public class JobEntranceLogAop extends BaseCommon {
 
         functionParam(arg);
 
-        ApplicationLinkContext.VERSIONS.set(ApplicationEnvironmentContext.version);
+        ApplicationLinkContext.VERSIONS.set(ApplicationEnvironmentContext.VERSION);
 
         Map<String, String> logs = new LinkedHashMap<String, String>();
 

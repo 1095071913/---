@@ -18,8 +18,9 @@
 package com.maozi.ss.api.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.maozi.base.CodeData;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
-import com.maozi.common.result.code.CodeAttribute;
 import com.maozi.common.result.error.exception.BusinessResultException;
 import com.maozi.mvc.config.rest.RestTemplate;
 import com.maozi.ss.api.SSService;
@@ -36,21 +37,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-/**	
- * 
- *  Specifications：功能
- * 
- *  Author：彭晋龙
- * 
- *  Creation Date：2021-12-18:16:32:34
- *
- *  Copyright Ownership：xiao mao zi
- * 
- *  Agreement That：Apache 2.0
- * 
- */
 
-public class SSServiceImpl extends BaseCommon implements SSService{
+
+public class SSServiceImpl extends BaseCommon<SystemErrorCode> implements SSService{
 	
 	@Resource
 	private RestTemplate restClient;
@@ -109,11 +98,11 @@ public class SSServiceImpl extends BaseCommon implements SSService{
 			
 		
 		if(isNull(ssResult)) {
-			throw new BusinessResultException(new CodeAttribute(500,"闪送服务不可用",500));
+			throw new BusinessResultException(new CodeData(500,"闪送服务不可用",500));
 		}
 		
 		if(ssResult.getStatusCodeValue() != 200 || ssResult.getBody().getInteger("status")!=200) {
-			throw new BusinessResultException(new CodeAttribute(ssResult.getBody().getInteger("status"),ssResult.getBody().getString("msg")),400);
+			throw new BusinessResultException(new CodeData(ssResult.getBody().getInteger("status"),ssResult.getBody().getString("msg")),400);
 		}
 		
 		return ssResult.getBody();
@@ -137,11 +126,11 @@ public class SSServiceImpl extends BaseCommon implements SSService{
 			
 		
 		if(isNull(ssResult)) {
-			throw new BusinessResultException(new CodeAttribute(500,"闪送服务不可用",500));
+			throw new BusinessResultException(new CodeData(500,"闪送服务不可用",500));
 		}
 		
 		if(ssResult.getStatusCodeValue() != 200 || ssResult.getBody().getInteger("status")!=200) {
-			throw new BusinessResultException(new CodeAttribute(ssResult.getBody().getInteger("status"),ssResult.getBody().getString("msg")),400);
+			throw new BusinessResultException(new CodeData(ssResult.getBody().getInteger("status"),ssResult.getBody().getString("msg")),400);
 		}
 		
 		return ssResult.getBody().getJSONObject("data");

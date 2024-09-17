@@ -23,10 +23,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
-import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 import com.maozi.base.enums.Deleted;
 import com.maozi.base.enums.Status;
+import java.io.Serial;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,38 +39,57 @@ import lombok.experimental.SuperBuilder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractBaseDomain implements Serializable {
 
-	@Column(comment = "主键")
-	@TableId(value = "id", type = IdType.ASSIGN_ID)
+	@Serial
+    protected static final long serialVersionUID = 1L;
+
+	/**
+	 * 主键
+	 */
+	@TableId(type = IdType.AUTO)
 	private Long id;
 
-	@Column(comment = "创建人")
-	@TableField(value = "create_username" , fill = FieldFill.INSERT)
+	/**
+	 * 创建人
+	 */
+	@TableField(fill = FieldFill.INSERT)
 	private String createUsername;
-	
-	@Column(comment = "更新人")
-	@TableField(value = "update_username" , fill = FieldFill.INSERT_UPDATE)
+
+	/**
+	 * 更新人
+	 */
+	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private String updateUsername;
 
+	/**
+	 * 逻辑删除
+	 */
 	@TableLogic
-	@Column(defaultValue = "0",type = MySqlTypeConstant.BIGINT,comment = "逻辑删除")
-	@TableField(value = "deleted" , fill = FieldFill.INSERT)
+	@TableField(fill = FieldFill.INSERT)
 	private Deleted deleted;
-	
-	@Column(defaultValue = "1",type = MySqlTypeConstant.BIGINT,comment = "状态")
-	@TableField(value = "status" , fill = FieldFill.INSERT)
+
+	/**
+	 * 状态
+	 */
+	@TableField(fill = FieldFill.INSERT)
 	private Status status;
 
+	/**
+	 * 版本号
+	 */
 	@Version
-	@Column(defaultValue = "0",comment = "版本号")
-	@TableField(value= "version" , fill = FieldFill.INSERT)
+	@TableField(fill = FieldFill.INSERT)
 	private Integer version;
 
-	@TableField(value= "create_time" , fill = FieldFill.INSERT)
-	@Column(comment = "创建时间")
+	/**
+	 * 创建时间
+	 */
+	@TableField(fill = FieldFill.INSERT)
 	private Long createTime;
-	
-	@TableField(value= "update_time" , fill = FieldFill.INSERT_UPDATE)
-	@Column(comment = "更新时间")
+
+	/**
+	 * 更新时间
+	 */
+	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private Long updateTime;
 
 }

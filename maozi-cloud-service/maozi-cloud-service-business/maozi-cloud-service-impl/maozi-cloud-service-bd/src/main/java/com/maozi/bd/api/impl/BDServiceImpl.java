@@ -19,10 +19,11 @@ package com.maozi.bd.api.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.maozi.base.CodeData;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.bd.api.BDService;
 import com.maozi.bd.properties.BDProperties;
 import com.maozi.common.BaseCommon;
-import com.maozi.common.result.code.CodeAttribute;
 import com.maozi.common.result.error.exception.BusinessResultException;
 import com.maozi.mvc.config.rest.RestTemplate;
 import java.util.Map;
@@ -32,21 +33,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
-/**	
- * 
- *  Specifications：功能
- * 
- *  Author：彭晋龙
- * 
- *  Creation Date：2021-12-18:16:32:34
- *
- *  Copyright Ownership：xiao mao zi
- * 
- *  Agreement That：Apache 2.0
- * 
- */
 
-public class BDServiceImpl extends BaseCommon implements BDService{
+
+public class BDServiceImpl extends BaseCommon<SystemErrorCode> implements BDService{
 
 	@Resource
 	protected BDProperties bdProperties;
@@ -78,11 +67,11 @@ public class BDServiceImpl extends BaseCommon implements BDService{
 		JSONObject response = JSONObject.parseObject(bdResult.getBody());
 		
 		if(isNull(bdResult)) {
-			throw new BusinessResultException(new CodeAttribute(500,"百度服务不可用",500));
+			throw new BusinessResultException(new CodeData(500,"百度服务不可用",500));
 		}
 		
 		if(isNull(bdResult) || bdResult.getStatusCodeValue() != 200 || response.getInteger("status")!=0) { 
-			throw new BusinessResultException(new CodeAttribute(response.getInteger("status"),response.getString("message")),bdResult.getStatusCodeValue());
+			throw new BusinessResultException(new CodeData(response.getInteger("status"),response.getString("message")),bdResult.getStatusCodeValue());
 		}
 		
 		return response; 

@@ -19,6 +19,7 @@ package com.maozi.qny.api.impl;
 
 import cn.hutool.core.io.FileUtil;
 import com.google.common.collect.Lists;
+import com.maozi.base.error.code.SystemErrorCode;
 import com.maozi.common.BaseCommon;
 import com.maozi.common.result.error.exception.BusinessResultException;
 import com.maozi.qny.api.QNYService;
@@ -40,21 +41,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-/**	
- * 
- *  Specifications：功能
- * 
- *  Author：彭晋龙
- * 
- *  Creation Date：2021-12-18:16:32:34
- *
- *  Copyright Ownership：xiao mao zi
- * 
- *  Agreement That：Apache 2.0
- * 
- */
 
-public class QNYServiceImpl extends BaseCommon implements QNYService{
+
+public class QNYServiceImpl extends BaseCommon<SystemErrorCode> implements QNYService{
 	
 	protected Auth auth;
 	

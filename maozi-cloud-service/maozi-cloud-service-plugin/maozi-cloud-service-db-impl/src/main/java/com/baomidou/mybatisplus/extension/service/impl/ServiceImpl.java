@@ -28,6 +28,8 @@ import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.maozi.base.AbstractBaseCode;
+import com.maozi.base.AbstractBaseDomain;
 import com.maozi.common.BaseCommon;
 import java.io.Serializable;
 import java.util.Collection;
@@ -51,7 +53,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2018-06-23
  */
 @SuppressWarnings("unchecked")
-public class ServiceImpl<M extends BaseMapper<T>, T> extends BaseCommon implements IService<T> {
+public class ServiceImpl<M extends BaseMapper<T>, T extends AbstractBaseDomain, E extends AbstractBaseCode> extends BaseCommon<E> implements IService<T> {
 
     private Log mybatisLog = LogFactory.getLog(getClass());
 

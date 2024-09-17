@@ -20,34 +20,27 @@ package com.maozi.mvc.config.error;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
+import com.maozi.common.BaseCommon;
 import com.maozi.utils.MapperUtils;
 import com.maozi.utils.context.ApplicationEnvironmentContext;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import org.springframework.context.annotation.Configuration;
 
-/**	
- * 
- *  Specifications：功能
- * 
- *  Author：彭晋龙
- * 
- *  Creation Date：2021-12-18:16:32:34
- *
- *  Copyright Ownership：xiao mao zi
- * 
- *  Agreement That：Apache 2.0
- * 
- */
+
 @Configuration
 public class ErrorParamTranslation {
 	
 	public static Map<String, String> errorParams;
 	
 	public ErrorParamTranslation() throws Exception{
-		ConfigService configService = NacosFactory.createConfigService(ApplicationEnvironmentContext.nacosAddr);
+
+		ConfigService configService = NacosFactory.createConfigService(ApplicationEnvironmentContext.CONFIG_ADDR);
+
 		errorParamTranslation(configService.getConfig("saas-param-error.json", "DEFAULT_GROUP", 5000));
+
 		configService.addListener("saas-param-error.json", "DEFAULT_GROUP", new Listener() {
+
 			@Override
 			public void receiveConfigInfo(String codeJson) {
 				errorParamTranslation(codeJson);
@@ -57,17 +50,17 @@ public class ErrorParamTranslation {
 			public Executor getExecutor() {
 				return null;
 			}
+
 		});
+
 	}
 	
 	public void errorParamTranslation(String json) {
 		
-		try {
-			errorParams = MapperUtils.json2map(json, String.class);
-		}catch (Exception e) {
-			e.getLocalizedMessage();
+		try {errorParams = MapperUtils.jsonToMap(json,String.class);}catch (Exception e) {
+			BaseCommon.error(e);
 		}
-		
+
 	}
 
 }
